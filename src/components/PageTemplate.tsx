@@ -9,14 +9,17 @@ export type PageContent = {
 
 const BG = { burgundy: 'bg-burgundy', char: 'bg-char', sage: 'bg-sage' };
 
-export function PageTemplate({ c }: { c: PageContent }) {
+export function PageTemplate({ c, visual }: { c: PageContent; visual?: React.ReactNode }) {
   return (
     <>
-      <section className={`${BG[c.color ?? 'burgundy']} text-ivory`}>
-        <div className="mx-auto max-w-7xl px-5 py-20 md:py-28">
-          <p className="eyebrow text-ivory/70">{c.eyebrow}</p>
-          <SlideLines className="display display-shadow mt-3 max-w-5xl text-[clamp(3rem,8vw,6.5rem)]" lines={c.title} />
-          <Reveal delay={500}><p className="mt-6 max-w-2xl text-lg text-ivory/85">{c.intro}</p></Reveal>
+      <section className={`${BG[c.color ?? 'burgundy']} overflow-x-clip text-ivory`}>
+        <div className={`mx-auto max-w-7xl px-5 py-20 md:py-28 ${visual ? 'grid items-center gap-12 lg:grid-cols-2' : ''}`}>
+          <div>
+            <p className="eyebrow text-ivory/70">{c.eyebrow}</p>
+            <SlideLines className={`display display-shadow mt-3 max-w-5xl ${visual ? 'text-[clamp(3rem,6vw,5.5rem)]' : 'text-[clamp(3rem,8vw,6.5rem)]'}`} lines={c.title} />
+            <Reveal delay={500}><p className="mt-6 max-w-2xl text-lg text-ivory/85">{c.intro}</p></Reveal>
+          </div>
+          {visual && <Reveal from="right" delay={250}>{visual}</Reveal>}
         </div>
       </section>
       <div className="mx-auto max-w-5xl px-5 py-16">
