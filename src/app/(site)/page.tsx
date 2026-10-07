@@ -48,17 +48,18 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-2 md:pb-32 md:pt-20">
           <div>
             <p className="eyebrow reveal" data-in="true" style={{ animation: 'slideUp .8s both' }}>AI Food Quality &amp; Operations Intelligence</p>
-            <SlideLines className="display display-shadow mt-4 text-[clamp(3rem,7vw,6.5rem)]" lines={['See the defect.', 'Understand', 'the pattern.', 'Act before it spreads.']} />
-            <Reveal delay={700}>
-              <p className="mt-7 max-w-xl text-lg text-ivory/85">FoodVision AI combines computer vision with production, batch, supplier and quality data to turn inspections into operational intelligence, investigations and prioritized action.</p>
+            <SlideLines className="display display-shadow mt-4 text-[clamp(3.2rem,7.2vw,6.6rem)]" lines={['See the defect.', 'Understand', 'the pattern.', 'Act before it spreads.']} />
+            <div className="enter-up" style={{ ['--d' as string]: '600ms' }}>
+              <p className="display mt-6 text-[clamp(1.8rem,3.4vw,2.8rem)] text-ivory">With AI that <span className="rotator text-amber"><span><b>sees</b><b>understands</b><b>investigates</b><b>acts</b><b>sees</b></span></span></p>
+              <p className="mt-5 max-w-xl text-lg text-ivory/85">FoodVision AI combines computer vision with production, batch, supplier and quality data to turn inspections into operational intelligence, investigations and prioritized action.</p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/sign-up" className="btn btn-dark">Get started</Link>
                 <Link href="/sign-in" className="btn btn-line">Sign in</Link>
               </div>
               <p className="eyebrow mt-8 text-ivory/70">Visual inspection · Quality intelligence · Operational context</p>
-            </Reveal>
+            </div>
           </div>
-          <Reveal from="right" delay={200}><HeroScene /></Reveal>
+          <div className="enter-right" style={{ ['--d' as string]: '250ms' }}><HeroScene /></div>
         </div>
       </section>
 
