@@ -17,7 +17,8 @@
 }
 
 :root { color-scheme: light; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+body { overflow-x: clip; }
 body { background: var(--color-ivory); color: var(--color-char); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 
 .display { font-family: var(--font-display); text-transform: uppercase; font-weight: 800; letter-spacing: 0.005em; line-height: 0.92; }

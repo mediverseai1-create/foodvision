@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { HeroScene } from '@/components/HeroScene';
+import { HeroConsole } from '@/components/HeroConsole';
 import { Marquee, Reveal, SlideLines } from '@/components/Motion';
 
 const ticker = ['Visual inspection', 'Quality intelligence', 'Operational context', 'Batch & lot signals', 'Supplier patterns', 'Prioritized action'].map((label, i) => ({
@@ -45,7 +45,7 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="scallop-bottom relative overflow-hidden bg-burgundy text-ivory" style={{ ['--edge' as string]: '#231a18' }}>
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-2 md:pb-32 md:pt-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-2 md:pb-32 md:pt-20 lg:pb-40">
           <div>
             <p className="eyebrow reveal" data-in="true" style={{ animation: 'slideUp .8s both' }}>AI Food Quality &amp; Operations Intelligence</p>
             <SlideLines className="display display-shadow mt-4 text-[clamp(3rem,7vw,6.5rem)]" lines={['See the defect.', 'Understand', 'the pattern.', 'Act before it spreads.']} />
@@ -58,7 +58,7 @@ export default function Home() {
               <p className="eyebrow mt-8 text-ivory/70">Visual inspection · Quality intelligence · Operational context</p>
             </Reveal>
           </div>
-          <Reveal from="right" delay={200}><HeroScene /></Reveal>
+          <Reveal from="right" delay={200}><HeroConsole /></Reveal>
         </div>
       </section>
 
