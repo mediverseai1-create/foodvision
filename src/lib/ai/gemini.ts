@@ -2,7 +2,7 @@ import 'server-only';
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 
-export const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+export const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 export const geminiConfigured = () => Boolean(process.env.GEMINI_API_KEY);
 
 let client: GoogleGenAI | null = null;
