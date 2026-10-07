@@ -3,6 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 
 export const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+const MODEL_CHAIN = [...new Set([MODEL, 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.1-flash-lite'])];
 export const geminiConfigured = () => Boolean(process.env.GEMINI_API_KEY);
 
 let client: GoogleGenAI | null = null;
@@ -35,26 +36,39 @@ export async function generateStructured<S extends z.ZodTypeAny>(opts: {
   system: string;
   parts: Part[];
 }): Promise<{ data: z.infer<S>; usage: { input: number; output: number } }> {
-  const run = async () =>
+  const call = (model: string) =>
     ai().models.generateContent({
-      model: MODEL,
+      model,
       contents: [{ role: 'user', parts: opts.parts }],
       config: {
         systemInstruction: `${SAFETY_PREAMBLE}\n\n${opts.system}`,
         responseMimeType: 'application/json',
         responseJsonSchema: opts.jsonSchema,
         temperature: 0.2,
+        httpOptions: { timeout: 45_000 },
       },
     });
+  /** Tries the configured model, then fallbacks, when Gemini is overloaded/unavailable. */
+  const run = async () => {
+    let last = 'Gemini request failed';
+    for (const model of MODEL_CHAIN) {
+      for (let retry = 0; retry < 2; retry++) {
+        try {
+          return await call(model);
+        } catch (e) {
+          last = e instanceof Error ? e.message : last;
+          const transient = /503|429|UNAVAILABLE|high demand|overloaded|timed? ?out|abort|fetch failed/i.test(last);
+          if (!transient) throw new AiError('upstream', last.slice(0, 300));
+          await new Promise((r) => setTimeout(r, 800 * (retry + 1)));
+        }
+      }
+    }
+    throw new AiError('upstream', `The AI service is temporarily overloaded. Please try again shortly. (${last.slice(0, 160)})`);
+  };
 
   let lastErr = 'unknown';
   for (let attempt = 0; attempt < 2; attempt++) {
-    let res;
-    try {
-      res = await run();
-    } catch (e) {
-      throw new AiError('upstream', e instanceof Error ? e.message : 'Gemini request failed');
-    }
+    const res = await run();
     try {
       const parsed = opts.schema.safeParse(JSON.parse(res.text ?? ''));
       if (parsed.success) {
